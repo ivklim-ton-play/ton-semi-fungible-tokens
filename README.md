@@ -153,22 +153,22 @@ TL-B schema: `excesses#d53276db query_id:uint64 = InternalMsgBody;`
 `sft_wallet_code` - (cell) with code of this wallet.  
 
 ## SFT minter
-`get_sft_data()` returns `(int total_supply, int mintable, slice admin_address, cell sft_content, cell sft_wallet_code)`
+ 1. `get_sft_data()` returns `(int total_supply, int mintable, slice admin_address, cell sft_content, cell sft_wallet_code)`
 
-`total_supply` - (integer) - the total number of issues SFTs  
+ `total_supply` - (integer) - the total number of issues SFTs  
 
-`mintable` - (-1/0) - flag which indicates whether number of SFTs can increase
+ `mintable` - (-1/0) - flag which indicates whether number of SFTs can increase
 
-`admin_address` - (MsgAddressInt) - address of smart-contrac which control SFT minter (for example it can be sft collection)
+ `admin_address` - (MsgAddressInt) - address of smart-contrac which control SFT minter (for example it can be sft collection)
 
-collection_address - (MsgAddress) address of the smart contract of the collection to which this NFT belongs. For collection-less NFT this parameter should be addr_none;
+ `collection_address` - (MsgAddress) - address of the smart contract of the collection to which this SFT minter belongs. For collection-less SFT minter this parameter should be addr_none;
 
 `index` - (integer) - index in SFT collection
 
-`sft_content` - cell - data in accordance to [Token Data Standard](https://github.com/ton-blockchain/TIPs/issues/64) #64
+`sft_content` - (cell) - data in accordance to [Token Data Standard](https://github.com/ton-blockchain/TIPs/issues/64) #64
 
-`sft_wallet_code` - cell - code of wallet for that sft
+`sft_wallet_code` - (cell) - code of wallet for that SFTs
 
-get_wallet_address(slice owner_address) return slice jetton_wallet_address
+ 2. `get_wallet_address(slice owner_address)` return `slice sft_wallet_address`
 
-Returns jetton wallet address (MsgAddressInt) for this owner address (MsgAddressInt).
+ Returns SFT wallet address (MsgAddressInt) for this owner address (MsgAddressInt).
