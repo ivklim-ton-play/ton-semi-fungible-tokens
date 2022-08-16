@@ -145,9 +145,9 @@ TL-B schema: `excesses#d53276db query_id:uint64 = InternalMsgBody;`
 `query_id` should be equal with request's `query_id`.
 
 ### Get-methods
-get_sft_wallet_data() returns (int balance, slice owner, slice sft_minter, cell sft_wallet_code)
+`get_sft_wallet_data()` returns `(int balance, slice owner, slice sft_minter, cell sft_wallet_code)`
 
-balance - (uint256) amount of SFTs on wallet.
-owner - (MsgAddress) address of wallet owner;
-sft_minter - (MsgAddress) address of SFT minter;
-sft_wallet_code - (cell) with code of this wallet;
+`balance` - (uint256) amount of SFTs on wallet.  
+`owner` - (MsgAddress) address of wallet owner.  
+`sft_minter` - (MsgAddress) address of SFT minter.  
+`sft_wallet_code` - (cell) with code of this wallet.  
