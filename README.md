@@ -153,17 +153,17 @@ TL-B schema: `excesses#d53276db query_id:uint64 = InternalMsgBody;`
 `sft_wallet_code` - (cell) with code of this wallet.  
 
 ## SFT minter
- 1. `get_sft_data()` returns `(int total_supply, int mintable, slice admin_address, cell sft_content, cell sft_wallet_code)`
+ 1. `get_sft_data()` returns `(int total_supply, int mintable, int index ,slice admin_address, slice collection_address, cell sft_content, cell sft_wallet_code)`
 
  `total_supply` - (integer) - the total number of issues SFTs  
 
  `mintable` - (-1/0) - flag which indicates whether number of SFTs can increase
+ 
+ `index` - (integer) - index in SFT collection
 
  `admin_address` - (MsgAddressInt) - address of smart-contrac which control SFT minter (for example it can be sft collection)
 
  `collection_address` - (MsgAddress) - address of the smart contract of the collection to which this SFT minter belongs. For collection-less SFT minter this parameter should be addr_none;
-
-`index` - (integer) - index in SFT collection
 
 `sft_content` - (cell) - data in accordance to [Token Data Standard](https://github.com/ton-blockchain/TIPs/issues/64) #64
 
