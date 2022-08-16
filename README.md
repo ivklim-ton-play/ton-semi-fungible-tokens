@@ -33,7 +33,7 @@ We need deploy 6 contracts:
 ## SFT wallet smart contract
 Must implement:
 
-**Internal message handlers**
+### Internal message handlers
 
 1. `transfer` 
 
@@ -108,3 +108,40 @@ TL-B schema: `excesses#d53276db query_id:uint64 = InternalMsgBody;`
 
 **Request**
 
+TL-B schema of inbound message:
+
+```
+burn#595f07bc query_id:uint64 amount:(VarUInteger 16) 
+              response_destination:MsgAddress custom_payload:(Maybe ^Cell)
+              = InternalMsgBody;
+```
+
+`query_id` - arbitrary request number.
+
+`amount` - amount of burned SFTs.
+
+`response_destination` - address where to send a response with confirmation of a successful burn and the rest of the incoming message coins.
+
+`custom_payload` - optional custom data.
+
+**Should be rejected if:**
+
+ 1. Message is not from the owner.
+
+ 2. There is no enough SFTs on the sender wallet.
+
+ 3. There is no enough TONs to send after processing the request at least `in_msg_value - max_tx_gas_price` to the `response_destination` address.
+
+ If the sender sft-wallet cannot guarantee this, it **must** immediately stop executing the request and throw error.
+
+**Otherwise should do:**
+
+ 1. decrease SFTs amount on burner wallet by `amount` and send notification to **SFT minter** with information about burn.
+
+ 2. **SFT minter** should send all excesses of incoming message coins to `response_destination` with the following layout:
+
+TL-B schema: `excesses#d53276db query_id:uint64 = InternalMsgBody;`
+
+`query_id` should be equal with request's `query_id`.
+
+### Get-methods
