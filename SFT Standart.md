@@ -23,7 +23,7 @@ You release a SFT-collection with circulating supply of 200 SFTs for id = 0, and
   - Owner_1 has 100 SFTs by id = 0 and 100 by id = 1.
   - Owner_2 has 100 SFTs by id = 0.
 
-We need deploy 6 contracts: 
+We need to deploy 6 contracts: 
 - **1** sft-collection smart-contract.
 - **1** sft-minter smart-contract by id = 0 and **1** sft-minter smart-contract by id = 1.
 - For owner_1 we need **1** sft-wallet smart-contract from sft-minter by id = 0 and **1** sft-wallet smart-contract from sft-minter by id = 1.
