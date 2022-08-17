@@ -153,7 +153,7 @@ TL-B schema: `excesses#d53276db query_id:uint64 = InternalMsgBody;`
 `sft_wallet_code` - (cell) with code of this wallet.  
 
 ## SFT minter
- 1. `get_sft_data()` returns `(int total_supply, int mintable, int index ,slice admin_address, slice collection_address, cell sft_content, cell sft_wallet_code)`
+ 1. `get_sft_data()` returns `(int total_supply, int mintable, int index ,slice admin_address, slice collection_address, cell individual_sft_content, cell sft_wallet_code)`
 
  `total_supply` - (integer) - the total number of issues SFTs  
 
@@ -161,14 +161,67 @@ TL-B schema: `excesses#d53276db query_id:uint64 = InternalMsgBody;`
  
  `index` - (integer) - index in SFT collection
 
- `admin_address` - (MsgAddressInt) - address of smart-contrac which control SFT minter
+ `admin_address` - (MsgAddress) - address of smart-contrac which control SFT minter
 
  `collection_address` - (MsgAddress) - address of the smart contract of the collection to which this SFT minter belongs. For collection-less SFT minter this parameter should be addr_none;
 
-`sft_content` - (cell) - data like NFT in accordance to [Token Data Standard](https://github.com/ton-blockchain/TIPs/issues/64) #64
+`individual_sft_content` - (cell) - if SFT minter has collection - individual SFT content in any format;
+if SFT minter has no collection - SFT minter content in format that complies with [Token Data Standard](https://github.com/ton-blockchain/TIPs/issues/64) #64
 
 `sft_wallet_code` - (cell) - code of wallet for that SFTs
 
  2. `get_wallet_address(slice owner_address)` return `slice sft_wallet_address`
 
- Returns SFT wallet address (MsgAddressInt) for this owner address (MsgAddressInt).
+ Returns SFT wallet address (MsgAddress) for this owner address (MsgAddress).
+ 
+ # SFT Collection smart contract
+ 
+It is assumed that the smart contract of the collection deploys smart contracts of SFT minters of this collection.
+
+Must implement:
+
+### Get-methods
+1. `get_sft_collection_data()` returns `(int next_sft_minter_index, cell collection_content, slice owner_address)`
+
+`next_sft_minter_index`- (int) the count of currently deployed SFT minter items in collection. Generally, collection should issue NFT with sequential indexes (see [Rationale(2)](https://github.com/ton-blockchain/TIPs/issues/62#:~:text=tree/main/nft-,Rationale,-%22One%20NFT%20%2D%20one) in NFT ). -1 value of next_item_index is used to indicate non-sequential collections, such collections should provide their own way for index generation / item enumeration.
+
+`collection_content` - (cell) - collection content in a format that complies with NFT standard [TIP-64](https://github.com/ton-blockchain/TIPs/issues/64).
+
+`owner_address` - (MsgAddress) - collection owner address, zero address if no owner.
+
+2. `get_sft_minter_address_by_index(int index)` returns `slice address`
+
+Gets the serial number of the SFT minter of this collection and returns the address (MsgAddress) of this SFT minter smart contract.
+
+3. `get_sft_minter_content(int index, cell individual_content)` returns `cell full_content`
+Gets the serial number of the SFT minter item of this collection and the individual content of this SFT minter item and returns the full content of the SFT minter item in format that complies with standard [TIP-64](https://github.com/ton-blockchain/TIPs/issues/64).
+
+As an example, if an SFT minter item stores a metadata URI in its content, then a collection smart contract can store a domain (e.g. "[https://site.org/](https://site.org/)"), and an SFT minter item smart contract in its content will store only the individual part of the link (e.g "kind-cobra").
+
+In this example the `get_nft_content` method concatenates them and return "[https://site.org/kind-cobra](https://site.org/kind-cobra)".
+
+
+# Rationale 
+Look in [NFT Rationale](https://github.com/ton-blockchain/TIPs/issues/62#:~:text=tree/main/nft-,Rationale,-%22One%20NFT%20%2D%20one)
+
+# TL-B schema
+```
+nothing$0 {X:Type} = Maybe X;
+just$1 {X:Type} value:X = Maybe X;
+left$0 {X:Type} {Y:Type} value:X = Either X Y;
+right$1 {X:Type} {Y:Type} value:Y = Either X Y;
+var_uint$_ {n:#} len:(#< n) value:(uint (len * 8))
+         = VarUInteger n;
+
+addr_none$00 = MsgAddressExt;
+addr_extern$01 len:(## 9) external_address:(bits len) 
+             = MsgAddressExt;
+anycast_info$_ depth:(#<= 30) { depth >= 1 }
+   rewrite_pfx:(bits depth) = Anycast;
+addr_std$10 anycast:(Maybe Anycast) 
+   workchain_id:int8 address:bits256  = MsgAddressInt;
+addr_var$11 anycast:(Maybe Anycast) addr_len:(## 9) 
+   workchain_id:int32 address:(bits addr_len) = MsgAddressInt;
+_ _:MsgAddressInt = MsgAddress;
+_ _:MsgAddressExt = MsgAddress;
+```
