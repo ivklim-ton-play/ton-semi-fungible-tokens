@@ -12,9 +12,9 @@ The idea is simple and seeks to create standard that can represent and control a
 # Specification
 
 Here and following we use:
- - "SFT" - semi-fungible token. Almost the same as jetton from [Jetton](https://github.com/ton-blockchain/TIPs/issues/74) standart. However, the decimal number is always 0. It leads to the logic that each token is undivided but fungible.
+ - "SFT" - semi-fungible token. Almost the same as jetton from [Jetton](https://github.com/ton-blockchain/TIPs/issues/74) standart. However, the decimal number is always 0 (we only need [token data](https://github.com/ton-blockchain/TIPs/issues/64) for NFT). It leads to the logic that each token is undivided but fungible.
  - "SFT wallet" - wallet for semi-fungible tokens. Stores information about amount of SFTs owned by each user. Almost the same as jetton-wallets from [Jetton](https://github.com/ton-blockchain/TIPs/issues/74). Smart-contracts called **"[sft-wallet](#sft-wallet)"**.
- - "SFT minter" - minter of semi-fungible tokens. It stores one [token data](https://github.com/ton-blockchain/TIPs/issues/64) for all SFTs that it minted. Ideologically very similar to Jetton master from [Jetton](https://github.com/ton-blockchain/TIPs/issues/74). Smart-contracts called **"sft-minter"**.
+ - "SFT minter" - minter of semi-fungible tokens. It stores one NFT [token data](https://github.com/ton-blockchain/TIPs/issues/64) for all SFTs that it minted. Ideologically very similar to Jetton master from [Jetton](https://github.com/ton-blockchain/TIPs/issues/74). Smart-contracts called **"sft-minter"**.
  - "SFT collection" - collection for SFT minters. Each SFT minter has its own unique id. Based on the idea of [nft-collection](https://github.com/ton-blockchain/TIPs/issues/62). Smart-contracts called **"sft-collection"**.
 
 ### Example: 
@@ -161,11 +161,11 @@ TL-B schema: `excesses#d53276db query_id:uint64 = InternalMsgBody;`
  
  `index` - (integer) - index in SFT collection
 
- `admin_address` - (MsgAddressInt) - address of smart-contrac which control SFT minter (for example it can be sft collection)
+ `admin_address` - (MsgAddressInt) - address of smart-contrac which control SFT minter
 
  `collection_address` - (MsgAddress) - address of the smart contract of the collection to which this SFT minter belongs. For collection-less SFT minter this parameter should be addr_none;
 
-`sft_content` - (cell) - data in accordance to [Token Data Standard](https://github.com/ton-blockchain/TIPs/issues/64) #64
+`sft_content` - (cell) - data like NFT in accordance to [Token Data Standard](https://github.com/ton-blockchain/TIPs/issues/64) #64
 
 `sft_wallet_code` - (cell) - code of wallet for that SFTs
 
