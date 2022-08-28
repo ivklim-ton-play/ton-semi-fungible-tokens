@@ -153,6 +153,31 @@ TL-B schema: `excesses#d53276db query_id:uint64 = InternalMsgBody;`
 `sft_wallet_code` - (cell) with code of this wallet.  
 
 ## SFT minter
+
+#### Internal message handlers
+
+1. get_static_data
+
+**Request**
+
+TL-B schema of inbound message:
+
+`get_static_data#2fcb26a2 query_id:uint64 = InternalMsgBody;`
+
+`query_id` - arbitrary request number.
+
+**should do:**
+
+Send back message with the following layout and send-mode `64` (return msg amount except gas fees):
+
+TL-B schema: `report_static_data#8b771735 query_id:uint64 index:uint256 collection:MsgAddress = InternalMsgBody;`
+
+`query_id` should be equal with request's `query_id.`
+
+`index` - numerical index of this NFT in the collection, usually serial number of deployment.
+
+`collection` - address of the smart contract of the collection to which this NFT belongs.
+
  1. `get_sft_data()` returns `(int init?, int index, slice collection_address, int total_supply, slice admin_address, cell individual_sft_content, cell sft_wallet_code)`
 
  `init?` - if not zero, then this SFT minter is fully initialized and ready for interaction
