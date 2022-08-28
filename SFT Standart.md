@@ -225,6 +225,8 @@ As an example, if an SFT minter item stores a metadata URI in its content, then 
 
 In this example the `get_nft_content` method concatenates them and return "[https://site.org/kind-cobra](https://site.org/kind-cobra)".
 
+# Implementation example
+https://github.com/ivklim-ton-play/ton-SFT
 
 # Rationale 
 Look in [NFT Rationale](https://github.com/ton-blockchain/TIPs/issues/62#:~:text=tree/main/nft-,Rationale,-%22One%20NFT%20%2D%20one)
