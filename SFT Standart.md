@@ -42,7 +42,7 @@ Must implement:
 TL-B schema of inbound message:
 
 ```
-transfer#0f8a7ea5 query_id:uint64 amount:(VarUInteger 16) destination:MsgAddress
+transfer#0762eb591 query_id:uint64 sft_amount:(VarUInteger 16) destination:MsgAddress
                  response_destination:MsgAddress custom_payload:(Maybe ^Cell)
                  forward_ton_amount:(VarUInteger 16) forward_payload:(Either Cell ^Cell)
                  = InternalMsgBody;
@@ -50,7 +50,7 @@ transfer#0f8a7ea5 query_id:uint64 amount:(VarUInteger 16) destination:MsgAddress
 
 `query_id` - arbitrary request number.
 
-`amount` - amount of transferred SFTs in elementary units.
+`sft_amount` - amount of transferred SFTs in elementary units.
 
 `destination` - address of the new owner of the SFTs.
 
@@ -224,4 +224,11 @@ addr_var$11 anycast:(Maybe Anycast) addr_len:(## 9)
    workchain_id:int32 address:(bits addr_len) = MsgAddressInt;
 _ _:MsgAddressInt = MsgAddress;
 _ _:MsgAddressExt = MsgAddress;
+
+transfer query_id:uint64 sft_amount:(VarUInteger 16) destination:MsgAddress
+           response_destination:MsgAddress custom_payload:(Maybe ^Cell)
+           forward_ton_amount:(VarUInteger 16) forward_payload:(Either Cell ^Cell)
+           = InternalMsgBody;
 ```
+
+`crc32('transfer query_id:uint64 sft_amount:VarUInteger 16 destination:MsgAddress response_destination:MsgAddress custom_payload:Maybe ^Cell forward_ton_amount:VarUInteger 16 forward_payload:Either Cell ^Cell = InternalMsgBody') = 0xf62eb591 & 0x7fffffff = 0x762eb591`
