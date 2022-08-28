@@ -239,6 +239,18 @@ excesses query_id:uint64 = InternalMsgBody;
 burn query_id:uint64 sft_amount:(VarUInteger 16) 
        response_destination:MsgAddress custom_payload:(Maybe ^Cell)
        = InternalMsgBody;
+       
+// ----- Unspecified by standard, but suggested format of internal message
+
+internal_transfer query_id:uint64 sft_amount:(VarUInteger 16) from:MsgAddress
+                     response_address:MsgAddress
+                     forward_ton_amount:(VarUInteger 16)
+                     forward_payload:(Either Cell ^Cell) 
+                     = InternalMsgBody;
+                     
+burn_notification query_id:uint64 sft_amount:(VarUInteger 16) 
+       sender:MsgAddress response_destination:MsgAddress
+       = InternalMsgBody;  
 ```
 
 `crc32('transfer query_id:uint64 sft_amount:VarUInteger 16 destination:MsgAddress response_destination:MsgAddress custom_payload:Maybe ^Cell forward_ton_amount:VarUInteger 16 forward_payload:Either Cell ^Cell = InternalMsgBody') = 0xf62eb591 & 0x7fffffff = 0x762eb591`
@@ -248,3 +260,7 @@ burn query_id:uint64 sft_amount:(VarUInteger 16)
 `crc32('excesses query_id:uint64 = InternalMsgBody') = 0x553276db | 0x80000000 = 0xd53276db`
 
 `crc32('burn query_id:uint64 sft_amount:VarUInteger 16 response_destination:MsgAddress custom_payload:Maybe ^Cell = InternalMsgBody') = 0xbb4532df & 0x7fffffff = 0x3b4532df`
+
+`crc32('internal_transfer query_id:uint64 sft_amount:VarUInteger 16 from:MsgAddress response_address:MsgAddress forward_ton_amount:VarUInteger 16 forward_payload:Either Cell ^Cell = InternalMsgBody') = 0x03ebaa40 & 0x7fffffff = 0x3ebaa40`
+
+`crc32('burn_notification query_id:uint64 sft_amount:VarUInteger 16 sender:MsgAddress response_destination:MsgAddress = InternalMsgBody') = 0xd4df7713 & 0x7fffffff = 0x54df7713`
