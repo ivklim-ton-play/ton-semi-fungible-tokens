@@ -154,9 +154,9 @@ TL-B schema: `excesses#d53276db query_id:uint64 = InternalMsgBody;`
 
 ## SFT minter
 
-#### Internal message handlers
+**Internal message handlers**
 
-1. get_static_data
+#### 1. `get_static_data`
 
 **Request**
 
