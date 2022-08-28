@@ -42,7 +42,7 @@ Must implement:
 TL-B schema of inbound message:
 
 ```
-transfer#0762eb591 query_id:uint64 sft_amount:(VarUInteger 16) destination:MsgAddress
+transfer#762eb591 query_id:uint64 sft_amount:(VarUInteger 16) destination:MsgAddress
                  response_destination:MsgAddress custom_payload:(Maybe ^Cell)
                  forward_ton_amount:(VarUInteger 16) forward_payload:(Either Cell ^Cell)
                  = InternalMsgBody;
