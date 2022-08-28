@@ -153,11 +153,9 @@ TL-B schema: `excesses#d53276db query_id:uint64 = InternalMsgBody;`
 `sft_wallet_code` - (cell) with code of this wallet.  
 
 ## SFT minter
- 1. `get_sft_data()` returns `(int total_supply, int mintable, int index ,slice admin_address, slice collection_address, cell individual_sft_content, cell sft_wallet_code)`
+ 1. `get_sft_data()` returns `(int total_supply, int index ,slice admin_address, slice collection_address, cell individual_sft_content, cell sft_wallet_code)`
 
  `total_supply` - (integer) - the total number of issues SFTs  
-
- `mintable` - (-1/0) - flag which indicates whether number of SFTs can increase
  
  `index` - (integer) - index in SFT collection
 
