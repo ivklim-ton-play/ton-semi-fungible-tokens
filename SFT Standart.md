@@ -75,7 +75,7 @@ If the sender sft-wallet cannot guarantee this, it must immediately stop executi
 
 **Otherwise should do:**
 
- 1. Decrease SFTs amount on sender wallet by `amount` and send message which increase SFTs amount on receiver wallet (and optionally deploy it).
+ 1. Decrease SFTs amount on sender wallet by `sft_amount` and send message which increase SFTs amount on receiver wallet (and optionally deploy it).
  2. if `forward_amount > 0` ensure that receiver's sft-wallet send message to `destination` address with `forward_amount` nanotons attached and with the following layout:
 
 TL-B schema:
@@ -89,7 +89,7 @@ transfer_notification#3fd4d3e2 query_id:uint64 sft_amount:(VarUInteger 16)
 ```
 `query_id` should be equal with request's `query_id`.
 
-`amount` amount of transferred SFTs.
+`sft_amount` amount of transferred SFTs.
 
 `sender` is address of the previous owner of transferred SFTs.
 
@@ -111,14 +111,14 @@ TL-B schema: `excesses#d53276db query_id:uint64 = InternalMsgBody;`
 TL-B schema of inbound message:
 
 ```
-burn#595f07bc query_id:uint64 amount:(VarUInteger 16) 
+burn#3b4532df query_id:uint64 sft_amount:(VarUInteger 16) 
               response_destination:MsgAddress custom_payload:(Maybe ^Cell)
               = InternalMsgBody;
 ```
 
 `query_id` - arbitrary request number.
 
-`amount` - amount of burned SFTs.
+`sft_amount` - amount of burned SFTs.
 
 `response_destination` - address where to send a response with confirmation of a successful burn and the rest of the incoming message coins.
 
@@ -136,7 +136,7 @@ burn#595f07bc query_id:uint64 amount:(VarUInteger 16)
 
 **Otherwise should do:**
 
- 1. decrease SFTs amount on burner wallet by `amount` and send notification to **SFT minter** with information about burn.
+ 1. decrease SFTs amount on burner wallet by `sft_amount` and send notification to **SFT minter** with information about burn.
 
  2. **SFT minter** should send all excesses of incoming message coins to `response_destination` with the following layout:
 
@@ -235,10 +235,16 @@ transfer_notification query_id:uint64 sft_amount:(VarUInteger 16)
            = InternalMsgBody;
 
 excesses query_id:uint64 = InternalMsgBody;
+
+burn query_id:uint64 sft_amount:(VarUInteger 16) 
+       response_destination:MsgAddress custom_payload:(Maybe ^Cell)
+       = InternalMsgBody;
 ```
 
 `crc32('transfer query_id:uint64 sft_amount:VarUInteger 16 destination:MsgAddress response_destination:MsgAddress custom_payload:Maybe ^Cell forward_ton_amount:VarUInteger 16 forward_payload:Either Cell ^Cell = InternalMsgBody') = 0xf62eb591 & 0x7fffffff = 0x762eb591`
 
 `crc32('transfer_notification query_id:uint64 sft_amount:VarUInteger 16 sender:MsgAddress forward_payload:Either Cell ^Cell = InternalMsgBody') = 0x3fd4d3e2 & 0x7fffffff = 0x3fd4d3e2`
 
-`crc32('excesses query_id:uint64 = InternalMsgBody') = 0x553276db & 0x7fffffff = 0xd53276db`
+`crc32('excesses query_id:uint64 = InternalMsgBody') = 0x553276db | 0x80000000 = 0xd53276db`
+
+`crc32('burn query_id:uint64 sft_amount:VarUInteger 16 response_destination:MsgAddress custom_payload:Maybe ^Cell = InternalMsgBody') = 0xbb4532df & 0x7fffffff = 0x3b4532df`
