@@ -265,6 +265,10 @@ burn query_id:uint64 amount:(VarUInteger 16)
        response_destination:MsgAddress custom_payload:(Maybe ^Cell)
        = InternalMsgBody;
        
+get_static_data query_id:uint64 = InternalMsgBody;
+
+report_static_data query_id:uint64 index:uint256 collection:MsgAddress = InternalMsgBody;
+       
 // ----- Unspecified by standard, but suggested format of internal message
 
 internal_transfer  query_id:uint64 amount:(VarUInteger 16) from:MsgAddress
@@ -289,3 +293,7 @@ burn_notification query_id:uint64 amount:(VarUInteger 16)
 `crc32('internal_transfer query_id:uint64 amount:VarUInteger 16 from:MsgAddress response_address:MsgAddress forward_ton_amount:VarUInteger 16 forward_payload:Either Cell ^Cell = InternalMsgBody') = 0x978d4519 & 0x7fffffff = 0x178d4519`
 
 `crc32('burn_notification query_id:uint64 amount:VarUInteger 16 sender:MsgAddress response_destination:MsgAddress = InternalMsgBody') = 0x7bdd97de & 0x7fffffff = 0x7bdd97de`
+
+`crc32('get_static_data query_id:uint64 = InternalMsgBody') = 0x2fcb26a2 & 0x7fffffff = 0x2fcb26a2`
+
+`crc32('report_static_data query_id:uint64 index:uint256 collection:MsgAddress = InternalMsgBody') = 0xb771735 | 0x80000000 = 0x8b771735`
