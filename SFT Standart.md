@@ -81,7 +81,7 @@ If the sender sft-wallet cannot guarantee this, it must immediately stop executi
 TL-B schema:
 
 ```
-transfer_notification#7362d09c query_id:uint64 amount:(VarUInteger 16) 
+transfer_notification#3fd4d3e2 query_id:uint64 sft_amount:(VarUInteger 16) 
                               sender:MsgAddress forward_payload:(Either Cell ^Cell)
                               = InternalMsgBody;
 ```
@@ -232,3 +232,5 @@ transfer query_id:uint64 sft_amount:(VarUInteger 16) destination:MsgAddress
 ```
 
 `crc32('transfer query_id:uint64 sft_amount:VarUInteger 16 destination:MsgAddress response_destination:MsgAddress custom_payload:Maybe ^Cell forward_ton_amount:VarUInteger 16 forward_payload:Either Cell ^Cell = InternalMsgBody') = 0xf62eb591 & 0x7fffffff = 0x762eb591`
+
+`crc32('transfer_notification query_id:uint64 sft_amount:VarUInteger 16 sender:MsgAddress forward_payload:Either Cell ^Cell = InternalMsgBody') = 0x3fd4d3e2 & 0x7fffffff = 0x3fd4d3e2`
