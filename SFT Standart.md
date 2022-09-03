@@ -1,4 +1,14 @@
-# SFT: semi-fungible token
+- **TEP**: 
+- **title**: SFT (semi-fungible token) Standard
+- **status**: Draft
+- **type**: Contract Interface
+- **authors**: [Ivan Klimov](https://github.com/ivklim-ton-play) 
+- **created**: 03.09.2022
+- **replaces**: -
+- **replaced by**: -
+
+# Summary
+
 A standard interface for semi-fungible tokens(SFT). 
 
 # Motivation
@@ -9,13 +19,30 @@ The idea is simple and seeks to create standard that can represent and control a
 - The way of tonkens transfers.
 - The way of retrieving common information (name, circulating supply, etc) about given semi-fungible tokens asset.
 
+# Guide
+
+This standard is needed in the case when you need to issue a large number of identical NFTs, but the serial number is not important. For example, a membership card to access the site or the same items for games (100 red t-shirts, 100 yellow shorts, etc.). 
+
+SFT represents ownership of a copy of a unique asset in a collection.
+
+## SFT Metadata
+Each SFT minter and SFT Collection itself has its own metadata (TEP-64). It contains some info about SFT, such as title and associated image. Metadata can be stored offchain (smart contract will contain only a link to json) or onchain (all data will be stored in smart contract).
+
+[SFT minter metadata](https://github.com/ton-blockchain/TEPs/blob/master/text/0064-token-data-standard.md#nft-collection-metadata-example-offchain) (it's like NFT item metadata)
+[SFT collection metadata](https://github.com/ton-blockchain/TEPs/blob/master/text/0064-token-data-standard.md#nft-item-metadata-example-offchain) (it's like NFT collection metadata)
+
+Offchain metadata is published for example on web 
+
+## Useful links
+1.[Reference semi-fundable token implementation](https://github.com/ivklim-ton-play/ton-SFT)
+
 # Specification
 
 Here and following we use:
- - "SFT" - semi-fungible token. Almost the same as jetton from [Jetton](https://github.com/ton-blockchain/TIPs/issues/74) standart. However, the decimal number is always 0 (we only need [token data](https://github.com/ton-blockchain/TIPs/issues/64) for NFT). It leads to the logic that each token is undivided but fungible.
- - "SFT wallet" - wallet for semi-fungible tokens. Stores information about amount of SFTs owned by each user. Almost the same as jetton-wallets from [Jetton](https://github.com/ton-blockchain/TIPs/issues/74). Smart-contracts called **"[sft-wallet](#sft-wallet)"**.
- - "SFT minter" - minter of semi-fungible tokens. It stores one NFT [token data](https://github.com/ton-blockchain/TIPs/issues/64) for all SFTs that it minted. Ideologically very similar to Jetton master from [Jetton](https://github.com/ton-blockchain/TIPs/issues/74). Smart-contracts called **"sft-minter"**.
- - "SFT collection" - collection for SFT minters. Each SFT minter has its own unique id. Based on the idea of [nft-collection](https://github.com/ton-blockchain/TIPs/issues/62). Smart-contracts called **"sft-collection"**.
+ - "SFT" - semi-fungible token. Almost the same as jetton from [Jetton](https://github.com/ton-blockchain/TEPs/blob/master/text/0074-jettons-standard.md) standart. However, the decimal number is always 0 (we only need [token metadata](https://github.com/ton-blockchain/TEPs/blob/master/text/0064-token-data-standard.md) for NFT). It leads to the logic that each token is undivided but fungible.
+ - "SFT wallet" - wallet for semi-fungible tokens. Stores information about amount of SFTs owned by each user. Almost the same as jetton-wallets from [Jetton](https://github.com/ton-blockchain/TEPs/blob/master/text/0074-jettons-standard.md). Smart-contracts called **"[sft-wallet](#sft-wallet)"**.
+ - "SFT minter" - minter of semi-fungible tokens. It stores one NFT [token metadata](https://github.com/ton-blockchain/TEPs/blob/master/text/0064-token-data-standard.md) for all SFTs that it minted. Ideologically very similar to Jetton master from [Jetton](https://github.com/ton-blockchain/TEPs/blob/master/text/0074-jettons-standard.md). Smart-contracts called **"sft-minter"**.
+ - "SFT collection" - collection for SFT minters. Each SFT minter has its own unique id. Based on the idea of [nft-collection](https://github.com/ton-blockchain/TEPs/blob/master/text/0062-nft-standard.md). Smart-contracts called **"sft-collection"**.
 
 ### Example: 
 You release a SFT-collection with circulating supply of 200 SFTs for id = 0, and circulating supply of 100 SFTs for id = 1.
@@ -71,7 +98,7 @@ transfer#0f8a7ea5 query_id:uint64 amount:(VarUInteger 16) destination:MsgAddress
 
 If the sender sft-wallet cannot guarantee this, it must immediately stop executing the request and throw error.
 
-`max_tx_gas_price` is the price in Toncoins of maximum transaction `gas limit` of NFT habitat workchain. For the basechain it can be obtained from [`ConfigParam 21`](https://github.com/ton-blockchain/ton/blob/78e72d3ef8f31706f30debaf97b0d9a2dfa35475/crypto/block/block.tlb#L660) from `gas_limit` field.
+`max_tx_gas_price` is the price in Toncoins of maximum transaction `gas limit` of SFT habitat workchain. For the basechain it can be obtained from [`ConfigParam 21`](https://github.com/ton-blockchain/ton/blob/78e72d3ef8f31706f30debaf97b0d9a2dfa35475/crypto/block/block.tlb#L660) from `gas_limit` field.
 
 **Otherwise should do:**
 
@@ -154,6 +181,8 @@ TL-B schema: `excesses#d53276db query_id:uint64 = InternalMsgBody;`
 
 ## SFT minter
 
+Must implement:
+
 **Internal message handlers**
 
 #### 1. `get_static_data`
@@ -174,9 +203,9 @@ TL-B schema: `report_static_data#8b771735 query_id:uint64 index:uint256 collecti
 
 `query_id` should be equal with request's `query_id.`
 
-`index` - numerical index of this NFT in the collection, usually serial number of deployment.
+`index` - numerical index of this SFT minter in the collection, usually serial number of deployment.
 
-`collection` - address of the smart contract of the collection to which this NFT belongs.
+`collection` - address of the smart contract of the collection to which this SFT minter belongs.
 
  1. `get_sft_data()` returns `(int init?, int index, slice collection_address, int total_supply, slice admin_address, cell individual_sft_content, cell sft_wallet_code)`
 
@@ -225,11 +254,21 @@ As an example, if an SFT minter item stores a metadata URI in its content, then 
 
 In this example the `get_nft_content` method concatenates them and return "[https://site.org/kind-cobra](https://site.org/kind-cobra)".
 
-# Implementation example
-https://github.com/ivklim-ton-play/ton-SFT
+# Drawbacks
+There is no way to get current owner of SFT collection and SFT minter onchain because TON is an asynchronous blockchain. When the message with info about SFT owner will be delivered, this info may become irrelevant, so we can't guarantee that current owner hasn't changed.
+
+There is no way to get actual wallet balance onchain, because when the message with balance will arrive, wallet balance may be not actual.
 
 # Rationale 
-Look in [NFT Rationale](https://github.com/ton-blockchain/TIPs/issues/62#:~:text=tree/main/nft-,Rationale,-%22One%20NFT%20%2D%20one)
+Look in [NFT Rationale and alternatives](https://github.com/ton-blockchain/TIPs/issues/62#:~:text=tree/main/nft-,Rationale,-%22One%20NFT%20%2D%20one)
+
+# Prior art
+1. [Ethereum NFT Standard (EIP-1155)](https://eips.ethereum.org/EIPS/eip-1155)
+
+# Unresolved questions
+
+# Future possibilities
+none
 
 # TL-B schema
 ```
