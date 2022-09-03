@@ -4,8 +4,6 @@
 - **type**: Contract Interface
 - **authors**: [Ivan Klimov](https://github.com/ivklim-ton-play) 
 - **created**: 03.09.2022
-- **replaces**: -
-- **replaced by**: -
 
 # Summary
 
