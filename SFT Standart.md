@@ -29,12 +29,13 @@ SFT represents ownership of a copy of a unique asset in a collection.
 Each SFT minter and SFT Collection itself has its own metadata (TEP-64). It contains some info about SFT, such as title and associated image. Metadata can be stored offchain (smart contract will contain only a link to json) or onchain (all data will be stored in smart contract).
 
 [SFT minter metadata](https://github.com/ton-blockchain/TEPs/blob/master/text/0064-token-data-standard.md#nft-collection-metadata-example-offchain) (it's like NFT item metadata)
+
 [SFT collection metadata](https://github.com/ton-blockchain/TEPs/blob/master/text/0064-token-data-standard.md#nft-item-metadata-example-offchain) (it's like NFT collection metadata)
 
 Offchain metadata is published for example on web 
 
 ## Useful links
-1.[Reference semi-fundable token implementation](https://github.com/ivklim-ton-play/ton-SFT)
+1. [Reference semi-fundable token implementation](https://github.com/ivklim-ton-play/ton-SFT)
 
 # Specification
 
@@ -220,7 +221,7 @@ TL-B schema: `report_static_data#8b771735 query_id:uint64 index:uint256 collecti
  `admin_address` - (MsgAddress) - address of smart-contrac which control SFT minter
 
 `individual_sft_content` - (cell) - if SFT minter has collection - individual SFT content in any format;
-if SFT minter has no collection - SFT minter content in format that complies with [Token Data Standard](https://github.com/ton-blockchain/TIPs/issues/64) #64
+if SFT minter has no collection - SFT minter content in format that complies with [Token Data Standard](https://github.com/ton-blockchain/TEPs/blob/master/text/0064-token-data-standard.md) #64
 
 `sft_wallet_code` - (cell) - code of wallet for that SFTs
 
@@ -237,9 +238,9 @@ Must implement:
 ### Get-methods
 1. `get_sft_collection_data()` returns `(int next_sft_minter_index, cell collection_content, slice owner_address)`
 
-`next_sft_minter_index`- (int) the count of currently deployed SFT minter items in collection. Generally, collection should issue NFT with sequential indexes (see [Rationale(2)](https://github.com/ton-blockchain/TIPs/issues/62#:~:text=tree/main/nft-,Rationale,-%22One%20NFT%20%2D%20one) in NFT ). -1 value of next_item_index is used to indicate non-sequential collections, such collections should provide their own way for index generation / item enumeration.
+`next_sft_minter_index`- (int) the count of currently deployed SFT minter items in collection. Generally, collection should issue NFT with sequential indexes (see [Rationale(2)](https://github.com/ton-blockchain/TEPs/blob/master/text/0062-nft-standard.md#rationale-and-alternatives) in NFT ). -1 value of next_item_index is used to indicate non-sequential collections, such collections should provide their own way for index generation / item enumeration.
 
-`collection_content` - (cell) - collection content in a format that complies with NFT standard [TIP-64](https://github.com/ton-blockchain/TIPs/issues/64).
+`collection_content` - (cell) - collection content in a format that complies with NFT standard [TEP-64](https://github.com/ton-blockchain/TEPs/blob/master/text/0064-token-data-standard.md).
 
 `owner_address` - (MsgAddress) - collection owner address, zero address if no owner.
 
@@ -248,7 +249,7 @@ Must implement:
 Gets the serial number of the SFT minter of this collection and returns the address (MsgAddress) of this SFT minter smart contract.
 
 3. `get_sft_minter_content(int index, cell individual_content)` returns `cell full_content`
-Gets the serial number of the SFT minter item of this collection and the individual content of this SFT minter item and returns the full content of the SFT minter item in format that complies with standard [TIP-64](https://github.com/ton-blockchain/TIPs/issues/64).
+Gets the serial number of the SFT minter item of this collection and the individual content of this SFT minter item and returns the full content of the SFT minter item in format that complies with standard [TEP-64](https://github.com/ton-blockchain/TEPs/blob/master/text/0064-token-data-standard.md).
 
 As an example, if an SFT minter item stores a metadata URI in its content, then a collection smart contract can store a domain (e.g. "[https://site.org/](https://site.org/)"), and an SFT minter item smart contract in its content will store only the individual part of the link (e.g "kind-cobra").
 
@@ -260,7 +261,7 @@ There is no way to get current owner of SFT collection and SFT minter onchain be
 There is no way to get actual wallet balance onchain, because when the message with balance will arrive, wallet balance may be not actual.
 
 # Rationale 
-Look in [NFT Rationale and alternatives](https://github.com/ton-blockchain/TIPs/issues/62#:~:text=tree/main/nft-,Rationale,-%22One%20NFT%20%2D%20one)
+Look in [NFT Rationale and alternatives](https://github.com/ton-blockchain/TEPs/blob/master/text/0062-nft-standard.md#rationale-and-alternatives)
 
 # Prior art
 1. [Ethereum NFT Standard (EIP-1155)](https://eips.ethereum.org/EIPS/eip-1155)
