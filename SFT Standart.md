@@ -24,7 +24,7 @@ This standard is needed in the case when you need to issue a large number of ide
 SFT represents ownership of a copy of a unique asset in a collection.
 
 ## SFT Metadata
-Each SFT minter and SFT Collection itself has its own metadata ([TEP-64]()). It contains some info about SFT, such as title and associated image. Metadata can be stored offchain (smart contract will contain only a link to json) or onchain (all data will be stored in smart contract).
+Each SFT minter and SFT Collection itself has its own metadata ([TEP-64](https://github.com/ton-blockchain/TEPs/blob/master/text/0064-token-data-standard.md)). It contains some info about SFT, such as title and associated image. Metadata can be stored offchain (smart contract will contain only a link to json) or onchain (all data will be stored in smart contract).
 
 ### SFT minter metadata example (offchain):
 ```json
