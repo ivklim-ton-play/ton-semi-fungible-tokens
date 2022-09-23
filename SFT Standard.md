@@ -86,7 +86,7 @@ Must implement:
 #### 2. [`burn` as in Jettons](https://github.com/ton-blockchain/TEPs/blob/master/text/0074-jettons-standard.md#2-burn)
 
 ### Get-methods
-1. [**`get_sft_wallet_data()`** as in Jettons](https://github.com/ton-blockchain/TEPs/blob/master/text/0074-jettons-standard.md#get-methods)
+1. [**`get_wallet_data()`** as in Jettons](https://github.com/ton-blockchain/TEPs/blob/master/text/0074-jettons-standard.md#get-methods)
 
 ## SFT minter smart contract
 
@@ -155,3 +155,4 @@ They both contain `transfer`, but it is important to consider the hash function 
 # Changelog
 [16 Sep 2022] The standard has been redesigned for greater compatibility with Jettons
 [21 Sep 2022] Use "sft":"true" in metadata instead of "sft" : {}
+[23 Sep 2022] For sft wallet use get_wallet_data()
